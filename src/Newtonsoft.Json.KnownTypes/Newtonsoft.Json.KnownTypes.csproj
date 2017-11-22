@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <RootNamespace>Newtonsoft.Json.KnownTypes</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Version>0.1</Version>
+    <AssemblyVersion>0.1</AssemblyVersion>
+    <FileVersion>0.1</FileVersion>
+    <Authors>Milosz Krajewski</Authors>
+    <PackageId>Newtonsoft.Json.KnownTypes</PackageId>
+    <Product>Newtonsoft.Json.KnownTypes</Product>
+    <Description>Newtonsoft.Json known types serialization binder</Description>
+    <PackageTags>json serialization polymoprhic binder</PackageTags>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</RepositoryUrl>
+    <PackageIconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</PackageIconUrl>
+  </PropertyGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
