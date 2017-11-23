@@ -24,10 +24,10 @@ namespace Newtonsoft.Json.KnownTypes
 		}
 
 		// NOTE: you might be tempted to use dictionary instead of list
-		// for now, this dictionary is so small (few entries) that performance
-		// difference if negligible
-		// once we reach ~20 entries we can change it to two (!) dictionaries
+		// for now, this dictionary is usually small (few entries)
 		// see: https://i.stack.imgur.com/O4ly9.png
+		// if tou see this as performance problem raise a ticket
+		// or submit PR :-)
 		private readonly IList<Binding> _knownBindings = new List<Binding>();
 
 		// Chained binder, used as fallback
@@ -53,16 +53,20 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <summary>Registers known polymorphic type under specified name. 
 		/// Expectes <see cref="JsonKnownTypeAttribute"/> annotation on a type.</summary>
 		/// <param name="type">The known polymorphic type.</param>
-		public void Register(Type type)
+		public void Register(Type type) => Register(type.GetTypeInfo());
+
+		/// <summary>Registers known polymorphic type under specified name. 
+		/// Expectes <see cref="JsonKnownTypeAttribute"/> annotation on a type.</summary>
+		/// <param name="type">The known polymorphic type.</param>
+		public void Register(TypeInfo type)
 		{
 			lock (_knownBindings)
 			{
 				var names = JsonKnownTypeAttribute.EnumerateNames(type).ToArray();
-				if (names.Length == 0) names = new[] { type.Name };
+				if (names.Length == 0)
+					names = new[] { type.Name };
 				foreach (var name in names)
-				{
-					_knownBindings.Add(new Binding { Name = name, Type = type });
-				}
+					_knownBindings.Add(new Binding { Name = name, Type = type.AsType() });
 			}
 		}
 
@@ -82,14 +86,13 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="assembly">Assembly.</param>
 		public void RegisterAssembly(Assembly assembly)
 		{
-			var types = assembly.DefinedTypes
+			var types = assembly
+				.DefinedTypes
 				.Where(ti => ti.GetCustomAttributes<JsonKnownTypeAttribute>().Any())
 				.ToArray();
 
 			foreach (var type in types)
-			{
-				Register(type.AsType());
-			}
+				Register(type);
 		}
 
 		/// <summary>Registers known polymorphic type under specified name.</summary>
@@ -106,10 +109,8 @@ namespace Newtonsoft.Json.KnownTypes
 		/// Used for JSON friendly serialization of polymorphic types.
 		/// </summary>
 		/// <param name="parentBinder">The parent binder.</param>
-		public KnownTypesSerializationBinder(ISerializationBinder parentBinder = null)
-		{
+		public KnownTypesSerializationBinder(ISerializationBinder parentBinder = null) =>
 			_parentBinder = parentBinder;
-		}
 
 		/// <summary>
 		/// When overridden in a derived class, controls the binding of a serialized object to a type.

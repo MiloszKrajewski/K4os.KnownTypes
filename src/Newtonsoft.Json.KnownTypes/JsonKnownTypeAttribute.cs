@@ -24,9 +24,8 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <summary>Enumerates names associated with given type.</summary>
 		/// <param name="type">Type in question.</param>
 		/// <returns>Sequence of associated names.</returns>
-		public static string[] EnumerateNames(Type type) =>
-			type.GetTypeInfo()
-				.GetCustomAttributes(typeof(JsonKnownTypeAttribute), false)
+		public static string[] EnumerateNames(TypeInfo type) =>
+			type.GetCustomAttributes(typeof(JsonKnownTypeAttribute), false)
 				.OfType<JsonKnownTypeAttribute>()
 				.Select(a => a.Name)
 				.ToArray();
