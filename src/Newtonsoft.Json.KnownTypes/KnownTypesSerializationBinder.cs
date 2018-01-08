@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Newtonsoft.Json.Serialization;
 
 namespace Newtonsoft.Json.KnownTypes
@@ -30,19 +31,36 @@ namespace Newtonsoft.Json.KnownTypes
 		// or submit PR :-)
 		private readonly IList<Binding> _knownBindings = new List<Binding>();
 
+		// reader-writer lock for bindings (many reader, one writer)
+		private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
 		// Chained binder, used as fallback
 		private readonly ISerializationBinder _parentBinder;
 
 		private Binding TryResolve(string name)
 		{
-			lock (_knownBindings)
+			_lock.EnterReadLock();
+			try
+			{ 
 				return _knownBindings.FirstOrDefault(p => p.Name == name);
+			}
+			finally
+			{
+				_lock.ExitReadLock();
+			}
 		}
 
 		private Binding TryResolve(Type type)
 		{
-			lock (_knownBindings)
+			_lock.EnterReadLock();
+			try
+			{
 				return _knownBindings.FirstOrDefault(p => p.Type == type);
+			}
+			finally
+			{
+				_lock.ExitReadLock();
+			}
 		}
 
 		/// <summary>Registers known polymorphic type under specified name. 
@@ -60,13 +78,18 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="type">The known polymorphic type.</param>
 		public void Register(TypeInfo type)
 		{
-			lock (_knownBindings)
+			var names = JsonKnownTypeAttribute.EnumerateNames(type).ToArray();
+			if (names.Length == 0) names = new[] { type.Name };
+
+			_lock.EnterWriteLock();
+			try
 			{
-				var names = JsonKnownTypeAttribute.EnumerateNames(type).ToArray();
-				if (names.Length == 0)
-					names = new[] { type.Name };
 				foreach (var name in names)
 					_knownBindings.Add(new Binding { Name = name, Type = type.AsType() });
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
 			}
 		}
 
@@ -100,8 +123,15 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="type">The known polymorphic type.</param>
 		public void Register(string name, Type type)
 		{
-			lock (_knownBindings)
+			_lock.EnterWriteLock();
+			try
+			{ 
 				_knownBindings.Add(new Binding { Name = name, Type = type });
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
+			}
 		}
 
 		/// <summary>
