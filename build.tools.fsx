@@ -41,7 +41,6 @@ module File =
         else [] |> WriteFile filename
 
     let exists filename = File.Exists(filename)
-
     let loadText filename = File.ReadAllText(filename)
     let saveText filename text = File.WriteAllText(filename, text)
 
@@ -127,8 +126,10 @@ module Proj =
     let isTemplateProj projectFile =
         let templateJson = (projectFile |> directory) @@ ".template.config/template.json"
         File.Exists(templateJson)
-    let isTestProj projectFile =
-        projectFile |> directory |> (fun n -> ["Test$"; "Demo$"] |> Seq.exists (fun p -> Regex.matches p n))
+    let isTestProj projectFile = projectFile |> directory |> Regex.matches "Test$"
+    let isDemoProj projectFile = projectFile |> directory |> Regex.matches "Demo$"
+    let isNugetProj projectFile = not (isTemplateProj projectFile || isTestProj projectFile || isDemoProj projectFile)
+
     let build project = 
         DotNetCli.Build (fun p -> { p with Configuration = "Release"; Project = project })
     let restore project = DotNetCli.Restore (fun p -> { p with Project = project })
@@ -138,7 +139,7 @@ module Proj =
                 Project = project
                 Configuration = "Release"
                 OutputPath = outputFolder |> FullName
-                AdditionalArgs = ["--no-build"]
+                AdditionalArgs = ["--no-build"; "--no-restore"]
                 // AdditionalArgs = ["--include-symbols"]
             }
         )
@@ -179,12 +180,11 @@ module Proj =
             )
         )
     let releaseNupkg () =
+        updateVersion productVersion assemblyVersion "Common.targets"
         let projects =
             listProj ()
-            |> Seq.filter (isTemplateProj >> not)
-            |> Seq.filter (isTestProj >> not)
+            |> Seq.filter isNugetProj
             |> Seq.toArray
-        projects |> Seq.iter (updateVersion productVersion assemblyVersion)
         let folders = 
             projects
             |> Seq.map directory

@@ -5,7 +5,6 @@ open Fake
 
 let build () = Proj.build "src"
 let restore () = Proj.restore "src"
-let pack project = Proj.pack 
 
 Target "Clean" (fun _ -> !! "**/bin/" ++ "**/obj/" |> DeleteDirs)
 

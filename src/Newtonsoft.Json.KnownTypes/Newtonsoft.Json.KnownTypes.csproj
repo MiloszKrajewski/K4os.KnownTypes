@@ -1,13 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard10;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard16;net46</TargetFrameworks>
     <RootNamespace>Newtonsoft.Json.KnownTypes</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>0.1</Version>
-    <AssemblyVersion>0.1</AssemblyVersion>
-    <FileVersion>0.1</FileVersion>
     <Authors>Milosz Krajewski</Authors>
     <PackageId>Newtonsoft.Json.KnownTypes</PackageId>
     <Product>Newtonsoft.Json.KnownTypes</Product>
@@ -18,5 +15,6 @@
     <RepositoryUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</RepositoryUrl>
     <PackageIconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</PackageIconUrl>
   </PropertyGroup>
+  <Import Project="..\..\Common.targets" />
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
