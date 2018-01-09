@@ -130,19 +130,23 @@ module Proj =
     let isDemoProj projectFile = projectFile |> directory |> Regex.matches "Demo$"
     let isNugetProj projectFile = not (isTemplateProj projectFile || isTestProj projectFile || isDemoProj projectFile)
 
-    let build project = 
-        DotNetCli.Build (fun p -> { p with Configuration = "Release"; Project = project })
     let restore project = DotNetCli.Restore (fun p -> { p with Project = project })
+    let build project = DotNetCli.Build (fun p -> { p with Configuration = "Release"; Project = project })
+    let test project = DotNetCli.Test (fun p ->
+        { p with
+            Configuration = "Release"
+            Project = project
+            AdditionalArgs = ["--no-build"; "--no-restore"]
+        })
+    let testAll () = listProj () |> Seq.filter isTestProj |> Seq.iter test
     let pack version project =
         DotNetCli.Pack (fun p ->
             { p with
                 Project = project
                 Configuration = "Release"
                 OutputPath = outputFolder |> FullName
-                AdditionalArgs = ["--no-build"; "--no-restore"]
-                // AdditionalArgs = ["--include-symbols"]
-            }
-        )
+                AdditionalArgs = ["--no-build"; "--no-restore"] // "--include-symbols"
+            })
         let versionFile = outputFolder @@ (project |> filename) |> sprintf "%s.nupkg.latest"
         [ version ] |> WriteFile versionFile
     let publish targetFolder project =
@@ -151,8 +155,9 @@ module Proj =
                 Project = project
                 Configuration = "Release"
                 Output = targetFolder |> FullName
-            }
-        )
+                AdditionalArgs = ["--no-restore"; "/p:BuildProjectReferences=false"] // "--no-build"
+            })
+
     let updateVersion nugetVersion fileVersion projectFile =
         projectFile |> File.update (forgive (fun fn ->
             XmlPokeInnerText fn "/Project/PropertyGroup/Version" nugetVersion
@@ -185,7 +190,7 @@ module Proj =
             listProj ()
             |> Seq.filter isNugetProj
             |> Seq.toArray
-        let folders = 
+        let folders =
             projects
             |> Seq.map directory
             |> Seq.distinct

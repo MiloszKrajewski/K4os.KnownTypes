@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard16;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net46</TargetFrameworks>
     <RootNamespace>Newtonsoft.Json.KnownTypes</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
@@ -9,7 +9,7 @@
     <PackageId>Newtonsoft.Json.KnownTypes</PackageId>
     <Product>Newtonsoft.Json.KnownTypes</Product>
     <Description>Newtonsoft.Json known types serialization binder</Description>
-    <PackageTags>json serialization polymoprhic binder</PackageTags>
+    <PackageTags>json serialization polymorphic binder</PackageTags>
     <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</RepositoryUrl>
