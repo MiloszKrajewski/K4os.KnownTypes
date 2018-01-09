@@ -3,6 +3,13 @@ framework: auto-detect
 source https://www.nuget.org/api/v2
 
 nuget Newtonsoft.Json
-nuget Microsoft.NET.Test.Sdk
-nuget xunit
-nuget xunit.runner.visualstudio
+
+group Test
+    storage: none
+    framework: auto-detect
+    source https://www.nuget.org/api/v2
+
+    nuget Newtonsoft.Json
+    nuget Microsoft.NET.Test.Sdk
+    nuget xunit
+    nuget xunit.runner.visualstudio
