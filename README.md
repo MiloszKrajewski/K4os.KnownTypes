@@ -10,7 +10,7 @@ One of the frequent problems with `Newtonsoft.Json` serializer is polymorphic se
 
 ### Usage
 
-Let's assume you have class hierarchy:
+Let's assume we have class hierarchy:
 
 ```csharp
 class Base { public string Text; }
@@ -31,7 +31,7 @@ var envelope = new Envelope {
 }
 ```
 
-When you serialized this envelope with default serialization settings:
+When we serialized this envelope with default serialization settings:
 
 ```csharp
 var json = JsonConvert.SerializeObject(envelope);
@@ -43,15 +43,15 @@ generated JSON will not contain any type information:
 {"Data":{"Value":7,"Text":"derived"}}
 ```
 
-When you deserialize this JSON:
+When we deserialize this JSON:
 
 ```csharp
 var data = JsonConvert.DeserializeObject<Envelope>(json);
 ```
 
-you maybe surprised that the object inside envelope is just of type `Base` not `Derived`.
+the object inside envelope will be just of type `Base` not `Derived` and it just lost `Value` field. If we serialize this is again we will get `{"Data":{"Text":"derived"}}` only.
 
-It is because `Base` is nominal type inside envelope no additional clues are provided.
+It is because `Base` is nominal (declared) type inside envelope and no additional clues are provided.
 
 To force serializer to include type information we can use `JsonSerializerSettings`:
 
@@ -69,30 +69,30 @@ which attached type information to message, generating slightly inflated message
 
 ```json
 {
-    "$type":"Newtonsoft.Json.KnownTypes.Test.Envelope, Newtonsoft.Json.KnownTypes.Test",
+    "$type":"Some.Potentially.Very.Long.Namespace.Envelope, And.Here.Comes.Assembly.Name",
     "Data":{
-        "$type":"Newtonsoft.Json.KnownTypes.Test.Derived, Newtonsoft.Json.KnownTypes.Test",
+        "$type":"Some.Potentially.Very.Long.Namespace.Derived, And.Here.Comes.Assembly.Name",
         "Value":7,
         "Text":"derived"
     }
 }
 ```
 
-This is kind-of what me might want. Slightly better results can be achieved with `TypeNameHandling.Auto` which includes type information only if actual type does not match nominal type (but it may fail you if nominal type changes over time).
+This is kind-of what me might want. Slightly better results can be achieved with `TypeNameHandling.Auto` which includes type information only if actual type does not match nominal type (but it may fail us if nominal type changes over time, for example we change `Data` field type to `object` and now all previosly persisted `Base` objects are without annotation, thus no properly deserialized).
 
-This solution does have one more disadvantage: **persisted message cannot be read if we move them to different assembly or change their name**. This is not ideal in constantly evolving system.
+One of disadvantages is tightly coupling JSON message to .NET assembly. It supposed to be portable, right? Plase note, that we can't even move them to different assembly or change their names, as `$type` filed will no longer match. This is not ideal in constantly evolving system.
 
 So what can we do?
 
-We can add another level of indirection - assigning "code names" to types, and serialize just those. We can move/rename types as we like as long as code names stay assigned to right types.
+We can add another level of indirection - assigning "code names" to types, and serialize just those. We can move/rename types as we like as long as code names stay assigned to appropriate types.
 
 What we need is to create a binder and assign names to types:
 
 ```csharp
 var binder = new KnownTypesSerializationBinder();
-binder.Register("Envelope", typeof(Envelope));
-binder.Register("Base", typeof(Base));
-binder.Register("Derived", typeof(Derived));
+binder.Register("envelope.v1", typeof(Envelope));
+binder.Register("base.v1", typeof(Base));
+binder.Register("derived.v1", typeof(Derived));
 ```
 
 Then we can just use this binder for serialization:
@@ -107,10 +107,11 @@ var settings = new JsonSerializerSettings {
 Since then type information will be much neater:
 
 ```json
-{"$type":"Envelope","Data":{"$type":"Derived","Value":7,"Text":"derived"}}
+{"$type":"envelope.v1","Data":{"$type":"derived.v1","Value":7,"Text":"derived"}}
 ```
 
-and not tightly coupled with actual type.
+and not tightly coupled with actual assembly nor type.
+
 
 ## JsonKnownTypeAttribute
 
