@@ -65,33 +65,6 @@ namespace Newtonsoft.Json.KnownTypes
 				_typeToName.Add(type, name);
 		}
 
-		private void TryRegister(string name, Type type)
-		{
-			_lock.EnterWriteLock();
-			try
-			{
-				TryRegisterImpl(name, type);
-			}
-			finally
-			{
-				_lock.ExitWriteLock();
-			}
-		}
-
-		private void TryRegister(Type type, IEnumerable<string> names)
-		{
-			_lock.EnterWriteLock();
-			try
-			{
-				foreach (var name in names)
-					TryRegisterImpl(name, type);
-			}
-			finally
-			{
-				_lock.ExitWriteLock();
-			}
-		}
-
 		/// <summary>Registers known polymorphic type under specified name. 
 		/// Expectes <see cref="JsonKnownTypeAttribute"/> annotation on a type.</summary>
 		/// <typeparam name="T">Annotated known type.</typeparam>
@@ -104,12 +77,23 @@ namespace Newtonsoft.Json.KnownTypes
 
 		/// <summary>Registers known polymorphic type under specified name. 
 		/// Expectes <see cref="JsonKnownTypeAttribute"/> annotation on a type.</summary>
-		/// <param name="type">The known polymorphic type.</param>
-		public void Register(TypeInfo type)
+		/// <param name="typeInfo">The known polymorphic type.</param>
+		public void Register(TypeInfo typeInfo)
 		{
-			var names = JsonKnownTypeAttribute.EnumerateNames(type).ToArray();
-			if (names.Length == 0) names = new[] { type.Name };
-			TryRegister(type.AsType(), names);
+			var names = JsonKnownTypeAttribute.EnumerateNames(typeInfo).ToArray();
+			if (names.Length == 0) names = new[] { typeInfo.Name };
+			var type = typeInfo.AsType();
+
+			_lock.EnterWriteLock();
+			try
+			{
+				foreach (var name in names)
+					TryRegisterImpl(name, type);
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
+			}
 		}
 
 		/// <summary>Registers all types from assembly containing give type.</summary>
@@ -142,7 +126,15 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="type">The known polymorphic type.</param>
 		public void Register(string name, Type type)
 		{
-			TryRegister(name, type);
+			_lock.EnterWriteLock();
+			try
+			{
+				TryRegisterImpl(name, type);
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
+			}
 		}
 
 		/// <summary>
