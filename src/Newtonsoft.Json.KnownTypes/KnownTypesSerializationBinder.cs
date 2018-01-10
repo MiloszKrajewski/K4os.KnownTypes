@@ -7,29 +7,20 @@ using Newtonsoft.Json.Serialization;
 
 namespace Newtonsoft.Json.KnownTypes
 {
+	/// <inheritdoc />
 	/// <summary>
 	/// Json.NET serialization binder using list of well-known type names
 	/// to avoid usage of fully qualified type names for polymorphic types.
 	/// </summary>
-	/// <seealso cref="ISerializationBinder" />
+	/// <seealso cref="T:Newtonsoft.Json.Serialization.ISerializationBinder" />
 	public class KnownTypesSerializationBinder: ISerializationBinder
 	{
 		/// <summary>The default <see cref="KnownTypesSerializationBinder"/></summary>
 		public static readonly KnownTypesSerializationBinder Default =
 			new KnownTypesSerializationBinder(new DefaultSerializationBinder());
 
-		private class Binding
-		{
-			public string Name { get; set; }
-			public Type Type { get; set; }
-		}
-
-		// NOTE: you might be tempted to use dictionary instead of list
-		// for now, this dictionary is usually small (few entries)
-		// see: https://i.stack.imgur.com/O4ly9.png
-		// if tou see this as performance problem raise a ticket
-		// or submit PR :-)
-		private readonly IList<Binding> _knownBindings = new List<Binding>();
+		private readonly Dictionary<string, Type> _nameToType = new Dictionary<string, Type>();
+		private readonly Dictionary<Type, string> _typeToName = new Dictionary<Type, string>();
 
 		// reader-writer lock for bindings (many reader, one writer)
 		private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
@@ -37,12 +28,13 @@ namespace Newtonsoft.Json.KnownTypes
 		// Chained binder, used as fallback
 		private readonly ISerializationBinder _parentBinder;
 
-		private Binding TryResolve(string name)
+		private Type TryResolve(string name)
 		{
 			_lock.EnterReadLock();
 			try
-			{ 
-				return _knownBindings.FirstOrDefault(p => p.Name == name);
+			{
+				_nameToType.TryGetValue(name, out var type);
+				return type;
 			}
 			finally
 			{
@@ -50,16 +42,53 @@ namespace Newtonsoft.Json.KnownTypes
 			}
 		}
 
-		private Binding TryResolve(Type type)
+		private string TryResolve(Type type)
 		{
 			_lock.EnterReadLock();
 			try
 			{
-				return _knownBindings.FirstOrDefault(p => p.Type == type);
+				_typeToName.TryGetValue(type, out var name);
+				return name;
 			}
 			finally
 			{
 				_lock.ExitReadLock();
+			}
+		}
+
+		private void TryRegisterImpl(string name, Type type)
+		{
+			// one type may have many names, 
+			// but name may point to only one type
+			_nameToType.Add(name, type);
+			if (!_typeToName.ContainsKey(type))
+				_typeToName.Add(type, name);
+		}
+
+		private void TryRegister(string name, Type type)
+		{
+			_lock.EnterWriteLock();
+			try
+			{
+				TryRegisterImpl(name, type);
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
+			}
+		}
+
+		private void TryRegister(Type type, IEnumerable<string> names)
+		{
+			_lock.EnterWriteLock();
+			try
+			{
+				foreach (var name in names)
+					TryRegisterImpl(name, type);
+			}
+			finally
+			{
+				_lock.ExitWriteLock();
 			}
 		}
 
@@ -80,17 +109,7 @@ namespace Newtonsoft.Json.KnownTypes
 		{
 			var names = JsonKnownTypeAttribute.EnumerateNames(type).ToArray();
 			if (names.Length == 0) names = new[] { type.Name };
-
-			_lock.EnterWriteLock();
-			try
-			{
-				foreach (var name in names)
-					_knownBindings.Add(new Binding { Name = name, Type = type.AsType() });
-			}
-			finally
-			{
-				_lock.ExitWriteLock();
-			}
+			TryRegister(type.AsType(), names);
 		}
 
 		/// <summary>Registers all types from assembly containing give type.</summary>
@@ -123,15 +142,7 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="type">The known polymorphic type.</param>
 		public void Register(string name, Type type)
 		{
-			_lock.EnterWriteLock();
-			try
-			{ 
-				_knownBindings.Add(new Binding { Name = name, Type = type });
-			}
-			finally
-			{
-				_lock.ExitWriteLock();
-			}
+			TryRegister(name, type);
 		}
 
 		/// <summary>
@@ -149,7 +160,7 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <param name="typeName">Specifies the <see cref="T:System.Type" /> name of the serialized object.</param>
 		/// <returns>The type of the object the formatter creates a new instance of.</returns>
 		public Type BindToType(string assemblyName, string typeName) =>
-			(string.IsNullOrEmpty(assemblyName) ? TryResolve(typeName)?.Type : null)
+			(string.IsNullOrEmpty(assemblyName) ? TryResolve(typeName) : null)
 			?? _parentBinder?.BindToType(assemblyName, typeName);
 
 		/// <summary>
@@ -163,11 +174,11 @@ namespace Newtonsoft.Json.KnownTypes
 		{
 			assemblyName = typeName = null;
 
-			var found = TryResolve(serializedType);
+			var foundName = TryResolve(serializedType);
 
-			if (found != null)
+			if (foundName != null)
 			{
-				typeName = found.Name;
+				typeName = foundName;
 			}
 			else
 			{
