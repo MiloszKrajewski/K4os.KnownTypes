@@ -13,3 +13,4 @@ group Test
     nuget Microsoft.NET.Test.Sdk
     nuget xunit
     nuget xunit.runner.visualstudio
+    nuget dotnet-xunit

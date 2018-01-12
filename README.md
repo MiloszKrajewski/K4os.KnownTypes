@@ -78,9 +78,9 @@ which attached type information to message, generating slightly inflated message
 }
 ```
 
-This is kind-of what me might want. Slightly better results can be achieved with `TypeNameHandling.Auto` which includes type information only if actual type does not match nominal type (but it may fail us if nominal type changes over time, for example we change `Data` field type to `object` and now all previosly persisted `Base` objects are without annotation, thus no properly deserialized).
+This is kind-of what me might want. Slightly better results can be achieved with `TypeNameHandling.Auto` which includes type information only if actual type does not match nominal type (but it may fail us if nominal type changes over time, for example we change `Data` field type to `object` and now all previously persisted `Base` objects are without annotation, thus no properly deserialized).
 
-One of disadvantages is tightly coupling JSON message to .NET assembly. It supposed to be portable, right? Plase note, that we can't even move them to different assembly or change their names, as `$type` filed will no longer match. This is not ideal in constantly evolving system.
+One of disadvantages is tightly coupling JSON message to .NET assembly. It supposed to be portable, right? Please note, that we can't even move them to different assembly or change their names, as `$type` filed will no longer match. This is not ideal in constantly evolving system.
 
 So what can we do?
 
@@ -115,7 +115,53 @@ and not tightly coupled with actual assembly nor type.
 
 ## JsonKnownTypeAttribute
 
+To avoid manual registration we can put `JsonKnownTypeAttribute` on classes we want assign names to, for example:
+
+```csharp
+[JsonKnownType("envlp.v1")]
+class Envelope { ... }
+```
+
+and register type with just:
+
+```csharp
+binder.Register<Envelope>();
+```
+
+or even all annotated classes in given assembly with:
+
+```csharp
+binder.RegisterAssembly(this.GetType());
+```
+
+*NOTE*: It uses `GetType()` to get "this type" and consequently "this assembly". There are several overloads of `RegisterAssembly`, pick one you like. I actually like creating empty class in assembly called `AssemblyHook` to easily register types with:
+
+```csharp
+binder.RegisterAssembly<Some.Other.Assembly.AssemblyHook>();
+```
+
 ## Versioning
+
+Binder can be used to message versioning. It it a good practice to annotate all types with version from very beginning. Previously we used `.v1` for all examples:
+
+```csharp
+[JsonKnownType("data.v1")]
+public class Data { ... }
+```
+
+It gives us nice way to introduce new version, by renaming old class (while keeping it's binding name) and introducing new "default" class:
+
+```csharp
+// old message gets renamed
+[JsonKnownType("data.v1")]
+public class DataV1 { ... }
+
+// new one takes it's place
+[JsonKnownType("data.v2")]
+public class Data { ... }
+```
+
+Please note, that all old messages are properly deserialized with no sweat.
 
 ## Build
 

@@ -15,6 +15,9 @@ namespace Newtonsoft.Json.KnownTypes
 	/// <seealso cref="T:Newtonsoft.Json.Serialization.ISerializationBinder" />
 	public class KnownTypesSerializationBinder: ISerializationBinder
 	{
+		private static readonly DefaultSerializationBinder Fallback =
+			new DefaultSerializationBinder();
+
 		/// <summary>The default <see cref="KnownTypesSerializationBinder"/></summary>
 		public static readonly KnownTypesSerializationBinder Default =
 			new KnownTypesSerializationBinder(new DefaultSerializationBinder());
@@ -153,7 +156,7 @@ namespace Newtonsoft.Json.KnownTypes
 		/// <returns>The type of the object the formatter creates a new instance of.</returns>
 		public Type BindToType(string assemblyName, string typeName) =>
 			(string.IsNullOrEmpty(assemblyName) ? TryResolve(typeName) : null)
-			?? _parentBinder?.BindToType(assemblyName, typeName);
+			?? (_parentBinder ?? Fallback).BindToType(assemblyName, typeName);
 
 		/// <summary>
 		/// When overridden in a derived class, controls the binding of a serialized object to a type.
@@ -174,7 +177,8 @@ namespace Newtonsoft.Json.KnownTypes
 			}
 			else
 			{
-				_parentBinder?.BindToName(serializedType, out assemblyName, out typeName);
+				(_parentBinder ?? Fallback)
+					.BindToName(serializedType, out assemblyName, out typeName);
 			}
 		}
 	}
