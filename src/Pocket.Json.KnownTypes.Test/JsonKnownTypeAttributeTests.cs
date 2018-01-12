@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Xunit;
 
-namespace Newtonsoft.Json.KnownTypes.Test
+namespace Pocket.Json.KnownTypes.Test
 {
 	public class JsonKnownTypeAttributeTests
 	{
@@ -77,8 +78,8 @@ namespace Newtonsoft.Json.KnownTypes.Test
 			TestDeserialization<ClassB>(binder, "B0");
 
 			var fallbackClassC =
-				"Newtonsoft.Json.KnownTypes.Test.JsonKnownTypeAttributeTests+ClassC, " +
-				"Newtonsoft.Json.KnownTypes.Test";
+				"Pocket.Json.KnownTypes.Test.JsonKnownTypeAttributeTests+ClassC, " +
+				"Pocket.Json.KnownTypes.Test";
 
 			TestSerialization(binder, fallbackClassC, new ClassC());
 		}

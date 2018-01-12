@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Newtonsoft.Json.KnownTypes", "Newtonsoft.Json.KnownTypes\Newtonsoft.Json.KnownTypes.csproj", "{94CE02D9-32BA-4715-BAE0-04E95263DE57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pocket.Json.KnownTypes", "Pocket.Json.KnownTypes\Pocket.Json.KnownTypes.csproj", "{94CE02D9-32BA-4715-BAE0-04E95263DE57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{6CBFE0DF-E136-4004-9704-3AAFFE15FD00}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{6CBFE0
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.KnownTypes.Test", "Newtonsoft.Json.KnownTypes.Test\Newtonsoft.Json.KnownTypes.Test.csproj", "{0378470E-2D27-4061-89AB-62ED216DEDE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pocket.Json.KnownTypes.Test", "Pocket.Json.KnownTypes.Test\Pocket.Json.KnownTypes.Test.csproj", "{0378470E-2D27-4061-89AB-62ED216DEDE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

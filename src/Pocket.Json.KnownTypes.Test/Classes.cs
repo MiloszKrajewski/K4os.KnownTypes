@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Newtonsoft.Json.KnownTypes.Test
+namespace Pocket.Json.KnownTypes.Test
 {
 	public class Base
 	{

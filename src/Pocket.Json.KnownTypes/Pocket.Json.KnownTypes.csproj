@@ -2,17 +2,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard10;net46</TargetFrameworks>
-    <RootNamespace>Newtonsoft.Json.KnownTypes</RootNamespace>
+    <RootNamespace>Pocket.Json.KnownTypes</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <Authors>Milosz Krajewski</Authors>
-    <PackageId>Newtonsoft.Json.KnownTypes</PackageId>
-    <Product>Newtonsoft.Json.KnownTypes</Product>
+    <PackageId>Pocket.Json.KnownTypes</PackageId>
+    <Product>Pocket.Json.KnownTypes</Product>
     <Description>Newtonsoft.Json known types serialization binder</Description>
     <PackageTags>json serialization polymorphic binder</PackageTags>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MiloszKrajewski/Newtonsoft.Json.KnownTypes</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/Pocket.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/MiloszKrajewski/Pocket.Json.KnownTypes</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MiloszKrajewski/Pocket.Json.KnownTypes</RepositoryUrl>
     <PackageIconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</PackageIconUrl>
   </PropertyGroup>
   <Import Project="..\..\Common.targets" />

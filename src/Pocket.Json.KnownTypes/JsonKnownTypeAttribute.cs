@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Newtonsoft.Json.KnownTypes
+namespace Pocket.Json.KnownTypes
 {
 	/// <inheritdoc />
 	/// <summary>

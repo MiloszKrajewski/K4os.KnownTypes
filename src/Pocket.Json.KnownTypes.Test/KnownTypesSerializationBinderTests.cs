@@ -1,9 +1,10 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Xunit;
 
-namespace Newtonsoft.Json.KnownTypes.Test
+namespace Pocket.Json.KnownTypes.Test
 {
 	public class KnownTypesSerializationBinderTests
 	{

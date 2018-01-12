@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json.Serialization;
 
-namespace Newtonsoft.Json.KnownTypes
+namespace Pocket.Json.KnownTypes
 {
 	/// <inheritdoc />
 	/// <summary>

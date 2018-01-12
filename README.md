@@ -1,6 +1,6 @@
-# Newtonsoft.Json.KnownTypes
+# Pocket.Json.KnownTypes
 
-![NuGet Stats](https://img.shields.io/nuget/v/Newtonsoft.Json.KnownTypes.svg)
+![NuGet Stats](https://img.shields.io/nuget/v/Pocket.Json.KnownTypes.svg)
 
 Serialization binder allowing to assign custom names to types.
 
