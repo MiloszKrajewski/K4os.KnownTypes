@@ -156,7 +156,7 @@ It gives us nice way to introduce new version, by renaming old class (while keep
 [JsonKnownType("data.v1")]
 public class DataV1 { ... }
 
-// new one takes it's place
+// new one takes its place
 [JsonKnownType("data.v2")]
 public class Data { ... }
 ```
