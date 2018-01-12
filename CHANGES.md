@@ -1,3 +1,6 @@
+## 1.0.1 (2018/01/12)
+* project renamed
+
 ## 1.0 (2018/01/12)
 * added default fallback binder
 
