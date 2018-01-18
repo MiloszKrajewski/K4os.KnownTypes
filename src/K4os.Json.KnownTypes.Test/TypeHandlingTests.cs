@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Pocket.Json.KnownTypes.Test
+namespace K4os.Json.KnownTypes.Test
 {
 	public class TypeHandlingTests
 	{

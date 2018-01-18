@@ -8,7 +8,7 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pocket.Json.KnownTypes\Pocket.Json.KnownTypes.csproj" />
+    <ProjectReference Include="..\K4os.Json.KnownTypes\K4os.Json.KnownTypes.csproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

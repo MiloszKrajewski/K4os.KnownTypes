@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Xunit;
 
-namespace Pocket.Json.KnownTypes.Test
+namespace K4os.Json.KnownTypes.Test
 {
 	public class KnownTypesSerializationBinderTests
 	{
