@@ -1,6 +1,6 @@
 # K4os.Json.KnownTypes
 
-![NuGet Stats](https://img.shields.io/nuget/v/K4os.Json.KnownTypes.svg)
+[![NuGet Stats](https://img.shields.io/nuget/v/K4os.Json.KnownTypes.svg)](https://www.nuget.org/packages/K4os.Json.KnownTypes)
 
 Serialization binder allowing to assign custom names to types.
 
