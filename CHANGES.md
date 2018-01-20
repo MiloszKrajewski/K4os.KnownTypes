@@ -1,3 +1,6 @@
+## 1.0.4 (2018/01/20)
+* more frameworks
+
 ## 1.0.3 (2018/01/18)
 * minor cleanup
 
