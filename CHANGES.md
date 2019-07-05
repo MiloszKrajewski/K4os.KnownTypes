@@ -1,3 +1,7 @@
+## 1.0.5 (2018/07/05)
+* lower required Newtonsoft.Json version to 10.0.1
+* added .NET 4.5 o the mix
+
 ## 1.0.4 (2018/01/20)
 * more frameworks
 
