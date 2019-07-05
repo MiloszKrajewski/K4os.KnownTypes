@@ -4,4 +4,20 @@
     <AssemblyVersion>1.0.4</AssemblyVersion>
     <FileVersion>1.0.4</FileVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <Product>K4os.Json.KnownTypes</Product>
+    <Authors>...</Authors>
+    <Copyright>...</Copyright>
+    <Description>...</Description>
+    <RepositoryUrl>https://.../K4os.Json.KnownTypes</RepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!--
+    <PackageId>K4os.Json.KnownTypes</PackageId>
+    <PackageTags>...</PackageTags>
+    <PackageLicenseUrl>https://.../LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://.../K4os.Json.KnownTypes</PackageProjectUrl>
+    <PackageIconUrl>https://.../K4os.Json.KnownTypes/icon.png</PackageIconUrl>
+    -->
+  </PropertyGroup>
 </Project>

@@ -166,6 +166,6 @@ Please note, that all old messages are properly deserialized with no sweat.
 ## Build
 
 ```shell
-paket restore
+paket install
 fake build
 ```

@@ -5,6 +5,11 @@
 .output/
 .idea/
 paket-files/
+packages/
 
 **/bin/
 **/obj/
+
+.secrets.cfg
+
+*.bak
