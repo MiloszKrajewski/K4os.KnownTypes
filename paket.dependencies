@@ -2,14 +2,7 @@ storage none
 framework auto-detect
 source https://www.nuget.org/api/v2
 
-nuget Microsoft.Extensions.DependencyInjection
-nuget Microsoft.Extensions.DependencyInjection.Abstractions
-nuget Microsoft.Extensions.Logging
-nuget Microsoft.Extensions.Logging.Abstractions
-
-nuget System.Reactive
-nuget System.Interactive
-nuget Newtonsoft.Json
+nuget Newtonsoft.Json 10.0.1 # not willing to go any lower
 
 nuget Microsoft.NET.Test.Sdk
 nuget xunit
