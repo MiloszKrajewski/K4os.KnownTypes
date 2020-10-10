@@ -1,16 +1,9 @@
-storage: none
-framework: auto-detect
+storage none
+framework auto-detect
 source https://www.nuget.org/api/v2
 
-nuget Newtonsoft.Json
+nuget Newtonsoft.Json 10.0.1 # not willing to go any lower
 
-group Test
-    storage: none
-    framework: auto-detect
-    source https://www.nuget.org/api/v2
-
-    nuget Newtonsoft.Json
-    nuget Microsoft.NET.Test.Sdk
-    nuget xunit
-    nuget xunit.runner.visualstudio
-    nuget dotnet-xunit
+nuget Microsoft.NET.Test.Sdk
+nuget xunit
+nuget xunit.runner.visualstudio

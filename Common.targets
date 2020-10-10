@@ -5,19 +5,18 @@
     <FileVersion>1.0.5</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <Product>K4os.Json.KnownTypes</Product>
     <Authors>Milosz Krajewski</Authors>
     <Copyright>Milosz Krajewski</Copyright>
     <Description>Newtonsoft.Json known types serialization binder</Description>
     <RepositoryUrl>https://github.com/MiloszKrajewski/K4os.Json.KnownTypes</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/K4os.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/MiloszKrajewski/K4os.Json.KnownTypes</PackageProjectUrl>
+    <PackageIconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</PackageIconUrl>
   </PropertyGroup>
   <PropertyGroup>
     <!--
     <PackageId>K4os.Json.KnownTypes</PackageId>
     <PackageTags>json serialization polymorphic binder</PackageTags>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/MiloszKrajewski/K4os.Json.KnownTypes/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/MiloszKrajewski/K4os.Json.KnownTypes</PackageProjectUrl>
-    <PackageIconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</PackageIconUrl>
     -->
   </PropertyGroup>
   <ItemGroup>
