@@ -114,6 +114,15 @@ namespace K4os.Json.KnownTypes.Test
 
 			Assert.Throws<ArgumentException>(() => binder.Register("bname", typeof(Other)));
 		}
+		
+		[Fact]
+		public void SameNameCanBeRegisteredTwiceAsLongTypeIsTheSame()
+		{
+			var binder = new KnownTypesSerializationBinder();
+			binder.Register("aname", typeof(Base));
+			binder.Register("aname", typeof(Base));
+			binder.Register("aname", typeof(Base));
+		}
 
 		[Fact]
 		public void CanRegisterSameTypeWithManyNames()

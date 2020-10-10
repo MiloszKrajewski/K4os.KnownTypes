@@ -4,7 +4,14 @@
 .paket/
 .output/
 .idea/
+.ionide/
 paket-files/
+packages/
 
 **/bin/
 **/obj/
+
+.secrets.cfg
+*.snk
+
+*.bak

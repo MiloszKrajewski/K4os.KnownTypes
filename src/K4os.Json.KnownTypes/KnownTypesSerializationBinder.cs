@@ -61,9 +61,19 @@ namespace K4os.Json.KnownTypes
 
 		private void TryRegisterImpl(string name, Type type)
 		{
-			// one type may have many names, 
-			// but name may point to only one type
-			_nameToType.Add(name, type);
+			// one type may have many names, but name may point to only one type
+			if (_nameToType.TryGetValue(name, out var existingType))
+			{
+				if (existingType != type)
+					throw new ArgumentException(
+						$"Cannot register {type.Name}, {existingType.Name} is already using '{name}'");
+				// otherwise it is all fine!
+			}
+			else
+			{
+				_nameToType.Add(name, type);				
+			}
+
 			if (!_typeToName.ContainsKey(type))
 				_typeToName.Add(type, name);
 		}
