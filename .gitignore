@@ -7,11 +7,13 @@
 .ionide/
 paket-files/
 packages/
+.local/
 
 **/bin/
 **/obj/
 
 .secrets.cfg
-*.snk
+.signing.snk
 
 *.bak
+*.user

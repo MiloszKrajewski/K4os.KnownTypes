@@ -1,3 +1,12 @@
+## 2.0.1 (2024/06/09)
+* ADDED: Factory extensions methods
+
+## 2.0.0 (2024/06/09)
+* NOTE: Breaking changes! It is a successor of `K4os.Json.KnownTypes` but has been completely rewritten
+* CHANGED: KnownTypesRegistry extracted to separate assembly
+* CHANGED: KnownTypesSerializationBinder depends on serialization independent KnownTypesRegistry
+* ADDED: KnownTypesJsonTypeInfoResolver to handle polymorphism for System.Text.Json
+
 ## 1.0.6 (2020/10/10)
 * not crashing when same entry gets re-registered
 

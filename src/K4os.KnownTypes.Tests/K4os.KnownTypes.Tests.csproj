@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\K4os.KnownTypes.NewtonsoftJson\K4os.KnownTypes.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\K4os.KnownTypes.SystemTextJson\K4os.KnownTypes.SystemTextJson.csproj" />
+    <ProjectReference Include="..\K4os.KnownTypes\K4os.KnownTypes.csproj" />
+  </ItemGroup>
+  
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+  
+</Project>

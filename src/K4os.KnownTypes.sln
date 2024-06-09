@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".environment", ".environment", "{CBD54F33-29C5-44F6-AE40-5C8D0FAA6C2A}"
+	ProjectSection(SolutionItems) = preProject
+		..\.secrets.cfg = ..\.secrets.cfg
+		..\.gitignore = ..\.gitignore
+		..\Directory.Packages.props = ..\Directory.Packages.props
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Build.targets = ..\Directory.Build.targets
+		..\settings.cfg = ..\settings.cfg
+		..\.env = ..\.env
+		..\global.json = ..\global.json
+		..\nuget.config = ..\nuget.config
+		..\paket.dependencies = ..\paket.dependencies
+		..\PublicAssembly.props = ..\PublicAssembly.props
+		..\paket.lock = ..\paket.lock
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources", ".resources", "{17E833F0-6E29-4D09-A225-D7BFEE8797E4}"
+	ProjectSection(SolutionItems) = preProject
+		..\CHANGES.md = ..\CHANGES.md
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_build", "..\.nuke\build\_build.csproj", "{1328C591-453F-45C7-BE60-FEA355A07CD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "K4os.KnownTypes", "K4os.KnownTypes\K4os.KnownTypes.csproj", "{F337CF6F-C997-46DC-8193-DEF79D767ADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K4os.KnownTypes.Tests", "K4os.KnownTypes.Tests\K4os.KnownTypes.Tests.csproj", "{CCF8014E-2DCC-42C7-92EC-BF87342C9D12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K4os.KnownTypes.NewtonsoftJson", "K4os.KnownTypes.NewtonsoftJson\K4os.KnownTypes.NewtonsoftJson.csproj", "{DAC0A1C9-E868-4B0B-B420-4FFD02FA81DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "K4os.KnownTypes.SystemTextJson", "K4os.KnownTypes.SystemTextJson\K4os.KnownTypes.SystemTextJson.csproj", "{E2C6FC67-4F49-4BE7-9296-FFA13AE1DA18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F337CF6F-C997-46DC-8193-DEF79D767ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F337CF6F-C997-46DC-8193-DEF79D767ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F337CF6F-C997-46DC-8193-DEF79D767ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F337CF6F-C997-46DC-8193-DEF79D767ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF8014E-2DCC-42C7-92EC-BF87342C9D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF8014E-2DCC-42C7-92EC-BF87342C9D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF8014E-2DCC-42C7-92EC-BF87342C9D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF8014E-2DCC-42C7-92EC-BF87342C9D12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1328C591-453F-45C7-BE60-FEA355A07CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1328C591-453F-45C7-BE60-FEA355A07CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC0A1C9-E868-4B0B-B420-4FFD02FA81DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC0A1C9-E868-4B0B-B420-4FFD02FA81DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC0A1C9-E868-4B0B-B420-4FFD02FA81DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC0A1C9-E868-4B0B-B420-4FFD02FA81DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2C6FC67-4F49-4BE7-9296-FFA13AE1DA18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2C6FC67-4F49-4BE7-9296-FFA13AE1DA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2C6FC67-4F49-4BE7-9296-FFA13AE1DA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2C6FC67-4F49-4BE7-9296-FFA13AE1DA18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F095D699-EC83-4007-B18D-E24977B495A6}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
