@@ -1,10 +1,10 @@
 # K4os.KnownTypes
 
-| Version                                                                                                                                            | Name                             |
-|----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
-| [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.svg)](https://www.nuget.org/packages/K4os.KnownTypes)                               | `K4os.KnownTypes`                |
-| [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.NewtonsoftJson.svg)](https://www.nuget.org/packages/K4os.KnownTypes.NewtonsoftJson) | `K4os.KnownTypes.NewtonsoftJson` |
-| [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.SystemTextJson.svg)](https://www.nuget.org/packages/K4os.KnownTypes.SystemTextJson) | `K4os.KnownTypes.SystemTextJson` |
+| Name                             | Version                                                                                                                                            |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------|----------------------------------|
+| `K4os.KnownTypes`                | [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.svg)](https://www.nuget.org/packages/K4os.KnownTypes)                               |
+| `K4os.KnownTypes.NewtonsoftJson` | [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.NewtonsoftJson.svg)](https://www.nuget.org/packages/K4os.KnownTypes.NewtonsoftJson) |
+| `K4os.KnownTypes.SystemTextJson` | [![NuGet Stats](https://img.shields.io/nuget/v/K4os.KnownTypes.SystemTextJson.svg)](https://www.nuget.org/packages/K4os.KnownTypes.SystemTextJson) | 
 
 Serialization binder allowing to assign custom names to types.
 
