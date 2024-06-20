@@ -31,7 +31,7 @@ var registry = new KnownTypesRegistry();
 registry.RegisterAssembly<Program>();
 
 var options = new JsonSerializerOptions {
-    TypeInfoResolver = registry.CreateJsonSerializationBinder()
+    TypeInfoResolver = registry.CreateJsonTypeInfoResolver()
 };
 
 JsonSerializer.Serialize(payload, options);
