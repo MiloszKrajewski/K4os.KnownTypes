@@ -9,18 +9,18 @@ public class RegistryTests
     public void SameNameCanBeRegisteredTwiceAsLongTypeIsTheSame()
     {
         var registry = new KnownTypesRegistry();
-        registry.Register("aname", typeof(Base));
-        registry.Register("aname", typeof(Base));
-        registry.Register("aname", typeof(Base));
+        registry.Register(typeof(Base), "aname");
+        registry.Register(typeof(Base), "aname");
+        registry.Register(typeof(Base), "aname");
     }
 
     [Fact]
     public void SameNameCannotBeRegisteredTwice()
     {
         var registry = new KnownTypesRegistry();
-        registry.Register("aname", typeof(Base));
-        registry.Register("bname", typeof(Derived));
-        Assert.Throws<ArgumentException>(() => registry.Register("bname", typeof(Other)));
+        registry.Register(typeof(Base), "aname");
+        registry.Register(typeof(Derived), "bname");
+        Assert.Throws<ArgumentException>(() => registry.Register(typeof(Other), "bname"));
     }
     
     [Fact]

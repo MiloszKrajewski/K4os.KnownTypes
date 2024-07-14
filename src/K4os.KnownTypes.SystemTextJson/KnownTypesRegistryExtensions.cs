@@ -12,13 +12,13 @@ public static class KnownTypesRegistryExtensions
     /// <param name="registry"><see cref="KnownTypesRegistry"/></param>
     /// <returns><see cref="JsonSerializerOptions"/></returns>
     public static JsonSerializerOptions CreateSystemTextJsonOptions(
-        this KnownTypesRegistry registry) =>
+        this IKnownTypesResolver registry) =>
         new() { TypeInfoResolver = registry.CreateJsonTypeInfoResolver() };
 
     /// <summary>Creates preconfigured <see cref="KnownTypesJsonTypeInfoResolver"/>.</summary>
     /// <param name="registry"><see cref="KnownTypesRegistry"/></param>
     /// <returns><see cref="KnownTypesJsonTypeInfoResolver"/></returns>
     public static KnownTypesJsonTypeInfoResolver CreateJsonTypeInfoResolver(
-        this KnownTypesRegistry registry) =>
+        this IKnownTypesResolver registry) =>
         new(registry);
 }

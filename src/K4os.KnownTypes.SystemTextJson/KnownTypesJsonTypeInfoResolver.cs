@@ -10,10 +10,15 @@ namespace K4os.KnownTypes.SystemTextJson;
 /// <summary>TypeInfo resolver supporting <see cref="KnownTypesRegistry"/>.</summary>
 public class KnownTypesJsonTypeInfoResolver: DefaultJsonTypeInfoResolver
 {
+    private readonly IKnownTypesResolver _registry;
+    
+    /// <summary>Types resolver.</summary>
+    public IKnownTypesResolver KnownTypesResolver => _registry;
+
     /// <summary>Creates new instance of <see cref="KnownTypesJsonTypeInfoResolver"/>.
     /// If no registry is provided uses shared (default) one.</summary>
     /// <param name="registry"></param>
-    public KnownTypesJsonTypeInfoResolver(KnownTypesRegistry? registry = null) => 
+    public KnownTypesJsonTypeInfoResolver(IKnownTypesResolver? registry = null) => 
         _registry = registry ?? KnownTypesRegistry.Default;
 
     /// <inheritdoc />
@@ -34,8 +39,6 @@ public class KnownTypesJsonTypeInfoResolver: DefaultJsonTypeInfoResolver
 
     private readonly ConcurrentDictionary<Type, JsonPolymorphismOptions?>
         _polymorphismOptionsCache = new();
-
-    private readonly KnownTypesRegistry _registry;
 
     private JsonPolymorphismOptions? GetOrCreatePolymorphismOptions(Type type) =>
         _polymorphismOptionsCache.GetOrAdd(type, CreatePolymorphismOptions);

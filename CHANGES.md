@@ -1,3 +1,8 @@
+## 2.1.0 (2024/07/14)
+* ADDED: handles DataContact attributes as well
+* CHANGED: exposing IKnownTypesRegistry and IKnownTypesResolver interfaces
+* ADDED: it is possible to implement custom naming rules with IKnownTypeAliasExtractor
+
 ## 2.0.1 (2024/06/09)
 * ADDED: Factory extensions methods
 

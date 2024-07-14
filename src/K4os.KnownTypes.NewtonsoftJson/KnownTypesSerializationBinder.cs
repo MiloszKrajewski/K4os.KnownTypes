@@ -18,7 +18,7 @@ public class KnownTypesSerializationBinder: ISerializationBinder
 	public static readonly KnownTypesSerializationBinder Default = new();
 
 	private readonly ISerializationBinder _parentBinder;
-	private readonly KnownTypesRegistry _aliasRegistry;
+	private readonly IKnownTypesResolver _aliasRegistry;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="KnownTypesSerializationBinder"/> class.
@@ -27,7 +27,7 @@ public class KnownTypesSerializationBinder: ISerializationBinder
 	/// <param name="aliasRegistry">Known types registry.</param>
 	/// <param name="parentBinder">The parent binder.</param>
 	public KnownTypesSerializationBinder(
-		KnownTypesRegistry? aliasRegistry = null,
+		IKnownTypesResolver? aliasRegistry = null,
 		ISerializationBinder? parentBinder = null)
 	{
 		_aliasRegistry = aliasRegistry ?? KnownTypesRegistry.Default;
@@ -35,7 +35,7 @@ public class KnownTypesSerializationBinder: ISerializationBinder
 	}
 	
 	/// <summary>Type alias registry. If you used default one you can add new ones.</summary>
-	public KnownTypesRegistry Registry => _aliasRegistry;
+	public IKnownTypesResolver Registry => _aliasRegistry;
 
 	/// <summary>
 	/// When overridden in a derived class, controls the binding of a serialized object to a type.

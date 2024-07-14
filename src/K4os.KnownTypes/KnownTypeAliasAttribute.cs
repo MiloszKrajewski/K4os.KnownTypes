@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 
 namespace K4os.KnownTypes;
 
@@ -20,9 +19,8 @@ public class KnownTypeAliasAttribute: Attribute
 	/// <summary>Enumerates names associated with given type.</summary>
 	/// <param name="type">Type in question.</param>
 	/// <returns>Sequence of associated names.</returns>
-	public static string[] EnumerateNames(TypeInfo type) =>
+	public static IEnumerable<string> EnumerateNames(Type type) =>
 		type.GetCustomAttributes(typeof(KnownTypeAliasAttribute), false)
 			.OfType<KnownTypeAliasAttribute>()
-			.Select(a => a.Name)
-			.ToArray();
+			.Select(a => a.Name);
 }

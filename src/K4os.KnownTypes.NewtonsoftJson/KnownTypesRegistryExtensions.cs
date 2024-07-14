@@ -12,7 +12,7 @@ public static class KnownTypesRegistryExtensions
     /// <param name="registry"><see cref="KnownTypesRegistry"/></param>
     /// <returns><see cref="JsonSerializerSettings"/></returns>
     public static JsonSerializerSettings CreateNewtonsoftJsonSettings(
-        this KnownTypesRegistry registry) =>
+        this IKnownTypesResolver registry) =>
         new() {
             TypeNameHandling = TypeNameHandling.Auto,
             SerializationBinder = registry.CreateJsonSerializationBinder()
@@ -22,6 +22,6 @@ public static class KnownTypesRegistryExtensions
     /// <param name="registry"><see cref="KnownTypesRegistry"/></param>
     /// <returns><see cref="KnownTypesSerializationBinder"/></returns>
     public static ISerializationBinder CreateJsonSerializationBinder(
-        this KnownTypesRegistry registry) =>
+        this IKnownTypesResolver registry) =>
         new KnownTypesSerializationBinder(registry);
 }

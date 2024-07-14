@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Runtime.Serialization;
+using Xunit;
 
 namespace K4os.KnownTypes.Tests;
 
@@ -10,6 +11,7 @@ public class AnnotationsTests
     [KnownTypeAlias("b")]
     class B;
 
+    [DataContract]
     class C;
     
     [Fact]
@@ -54,10 +56,8 @@ public class AnnotationsTests
     {
         var registry = new KnownTypesRegistry();
         registry.Register<C>();
-        
-        var fullName = typeof(C).FullName.ThrowIfNull();
-        
-        Assert.Equal(fullName, registry.TryGetAlias(typeof(C)));
-        Assert.Equal(typeof(C), registry.TryGetType(fullName));
+
+        var registeredName = registry.TryGetAlias(typeof(C)); 
+        Assert.Equal(typeof(C), registry.TryGetType(registeredName!));
     }
 }

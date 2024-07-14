@@ -9,7 +9,12 @@ namespace K4os.KnownTypes.Tests;
 
 public class NewtonsoftTests
 {
-    private static KnownTypesSerializationBinder CreateBinder() => new(new KnownTypesRegistry());
+    private static (KnownTypesRegistry Registry, KnownTypesSerializationBinder Binder) CreateBinder()
+    {
+        var registry = new KnownTypesRegistry();
+        var binder = new KnownTypesSerializationBinder(registry);
+        return (registry, binder);
+    }
 
     private static void TestDeserialization<T>(ISerializationBinder binder, string name)
     {
@@ -35,9 +40,9 @@ public class NewtonsoftTests
     [Fact]
     public void AttributeCanBeUsedToRegister()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register<ClassA>();
-        binder.Registry.Register<ClassB>();
+        var (registry, binder) = CreateBinder();
+        registry.Register<ClassA>();
+        registry.Register<ClassB>();
 
         TestSerialization(binder, "A0", new ClassA());
         TestDeserialization<ClassA>(binder, "A0");
@@ -48,9 +53,9 @@ public class NewtonsoftTests
     [Fact]
     public void FirstAttributeTakesPriority()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register<ClassA>();
-        binder.Registry.Register<ClassB>();
+        var (registry, binder) = CreateBinder();
+        registry.Register<ClassA>();
+        registry.Register<ClassB>();
 
         TestSerialization(binder, "A0", new ClassA());
         TestDeserialization<ClassA>(binder, "A0");
@@ -61,8 +66,8 @@ public class NewtonsoftTests
     [Fact]
     public void RegisterAssemblyRegistersAllAnnotatedTypes()
     {
-        var binder = CreateBinder();
-        binder.Registry.RegisterAssembly(GetType().GetTypeInfo().Assembly);
+        var (registry, binder) = CreateBinder();
+        registry.RegisterAssembly(GetType().GetTypeInfo().Assembly);
 
         TestSerialization(binder, "A0", new ClassA());
         TestDeserialization<ClassA>(binder, "A0");
@@ -81,10 +86,10 @@ public class NewtonsoftTests
     [Fact]
     public void SupportsPolymorphism()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register("envl", typeof(Envelope));
-        binder.Registry.Register("base", typeof(Base));
-        binder.Registry.Register("drvd", typeof(Derived));
+        var (registry, binder) = CreateBinder();
+        registry.Register("envl", typeof(Envelope));
+        registry.Register("base", typeof(Base));
+        registry.Register("drvd", typeof(Derived));
 
         var settings = new JsonSerializerSettings {
             TypeNameHandling = TypeNameHandling.All,
@@ -107,15 +112,15 @@ public class NewtonsoftTests
     [Fact]
     public void NameCanRedirectToDifferentType()
     {
-        var binder1 = CreateBinder();
-        binder1.Registry.Register("envl", typeof(Envelope));
-        binder1.Registry.Register("base", typeof(Base));
-        binder1.Registry.Register("drvd", typeof(Derived));
+        var (registry1, binder1) = CreateBinder();
+        registry1.Register("envl", typeof(Envelope));
+        registry1.Register("base", typeof(Base));
+        registry1.Register("drvd", typeof(Derived));
 
-        var binder2 = CreateBinder();
-        binder2.Registry.Register("envl", typeof(Envelope));
-        binder2.Registry.Register("base", typeof(Base));
-        binder2.Registry.Register("drvd", typeof(Other));
+        var (registry2, binder2) = CreateBinder();
+        registry2.Register("envl", typeof(Envelope));
+        registry2.Register("base", typeof(Base));
+        registry2.Register("drvd", typeof(Other));
 
         var settings1 = new JsonSerializerSettings {
             TypeNameHandling = TypeNameHandling.All,
@@ -140,10 +145,10 @@ public class NewtonsoftTests
     [Fact]
     public void CanRegisterManyTypes()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register("aname", typeof(Base));
-        binder.Registry.Register("bname", typeof(Derived));
-        binder.Registry.Register("cname", typeof(Other));
+        var (registry, binder) = CreateBinder();
+        registry.Register("aname", typeof(Base));
+        registry.Register("bname", typeof(Derived));
+        registry.Register("cname", typeof(Other));
 
         TestDeserialization<Base>(binder, "aname");
         TestDeserialization<Derived>(binder, "bname");
@@ -157,10 +162,10 @@ public class NewtonsoftTests
     [Fact]
     public void CanRegisterSameTypeWithManyNames()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register("aname", typeof(Base));
-        binder.Registry.Register("bname", typeof(Derived));
-        binder.Registry.Register("cname", typeof(Derived));
+        var (registry, binder) = CreateBinder();
+        registry.Register("aname", typeof(Base));
+        registry.Register("bname", typeof(Derived));
+        registry.Register("cname", typeof(Derived));
 
         TestDeserialization<Base>(binder, "aname");
         TestDeserialization<Derived>(binder, "bname");
@@ -173,10 +178,10 @@ public class NewtonsoftTests
     [Fact]
     public void WithManyNamesFirstOneIsUsed()
     {
-        var binder = CreateBinder();
-        binder.Registry.Register("aname", typeof(Derived));
-        binder.Registry.Register("bname", typeof(Derived));
-        binder.Registry.Register("cname", typeof(Derived));
+        var (registry, binder) = CreateBinder();
+        registry.Register("aname", typeof(Derived));
+        registry.Register("bname", typeof(Derived));
+        registry.Register("cname", typeof(Derived));
 
         TestDeserialization<Derived>(binder, "aname");
         TestDeserialization<Derived>(binder, "bname");

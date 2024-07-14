@@ -171,4 +171,21 @@ public class SystemJsonTests
 
         TestSerialization(registry, "aname", new Derived());
     }
+    
+    [Fact]
+    public void StillWorkWhenDeserializingAsObject()
+    {
+        var registry = new KnownTypesRegistry();
+        registry.Register("aname", typeof(Derived));
+        
+        var options = CreateOptions(registry);
+        var serialized = JsonSerializer.Serialize(new Derived(), options);
+        var deserialized1 = JsonSerializer.Deserialize<Base>(serialized, options);
+        var deserialized2 = JsonSerializer.Deserialize<object>(serialized, options);
+        var deserialized3 = JsonSerializer.Deserialize<JsonElement>(serialized, options);
+        
+        Assert.IsType<Derived>(deserialized1);
+        Assert.IsType<JsonElement>(deserialized2);
+        Assert.IsType<JsonElement>(deserialized3);
+    }
 }
