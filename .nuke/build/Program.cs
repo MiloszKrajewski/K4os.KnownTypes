@@ -21,12 +21,6 @@ using static Nuke.Common.Tools.Docker.DockerTasks;
 
 // ReSharper disable UnusedMember.Local
 
-[GitHubActions(
-	"continuous",
-	GitHubActionsImage.WindowsLatest,
-	On = [GitHubActionsTrigger.Push],
-	InvokedTargets = [nameof(Release)],
-	CacheKeyFiles = [".paket.lock", "Directory.Packages.props", "**/*.csproj"])]
 class Program: NukeBuild
 {
 	public static int Main() => Execute<Program>(x => x.Build);
