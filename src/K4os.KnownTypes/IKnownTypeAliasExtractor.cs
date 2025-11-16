@@ -7,7 +7,7 @@ public interface IKnownTypeAliasExtractor
 {
     /// <summary>Determines if given type should be automatically registered when scanning
     /// assemblies.</summary>
-    /// <param name="type">Type if question.</param>
+    /// <param name="type">Type in question.</param>
     /// <returns><c>true</c> if type should be registered when scanning assembly;
     /// <c>false</c> otherwise.</returns>
     bool AutoRegister(Type type);

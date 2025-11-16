@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+using K4os.KnownTypes.SystemTextJson.Internal;
 
 namespace K4os.KnownTypes.SystemTextJson;
 
@@ -28,7 +29,8 @@ public class KnownTypesJsonTypeInfoResolver: DefaultJsonTypeInfoResolver
         if (jsonTypeInfo.Kind != JsonTypeInfoKind.Object) 
             return jsonTypeInfo;
 
-        var polymorphismOptions = GetOrCreatePolymorphismOptions(jsonTypeInfo.Type);
+        // Clone cached polymorphism options to avoid shared mutations across different JsonTypeInfo instances.
+        var polymorphismOptions = Clone(GetOrCreatePolymorphismOptions(jsonTypeInfo.Type));
         if (polymorphismOptions is not null)
         {
             jsonTypeInfo.PolymorphismOptions = polymorphismOptions;
@@ -50,12 +52,29 @@ public class KnownTypesJsonTypeInfoResolver: DefaultJsonTypeInfoResolver
             return null;
 
         var options = new JsonPolymorphismOptions {
-            TypeDiscriminatorPropertyName = "$type",
+            TypeDiscriminatorPropertyName = JsonConfiguration.TypePropertyName,
             IgnoreUnrecognizedTypeDiscriminators = true,
             UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
         };
         knownDerivedTypes.ForEach(options.DerivedTypes.Add);
         return options;
+    }
+
+    private static JsonPolymorphismOptions? Clone(JsonPolymorphismOptions? other)
+    {
+        if (other is null)
+            return null;
+
+        var clone = new JsonPolymorphismOptions {
+            TypeDiscriminatorPropertyName = other.TypeDiscriminatorPropertyName,
+            IgnoreUnrecognizedTypeDiscriminators = other.IgnoreUnrecognizedTypeDiscriminators,
+            UnknownDerivedTypeHandling = other.UnknownDerivedTypeHandling,
+        };
+
+        foreach (var derivedType in other.DerivedTypes)
+            clone.DerivedTypes.Add(derivedType);
+
+        return clone;
     }
 
     private IEnumerable<JsonDerivedType> FindKnownDerivedTypes(Type rootType) =>

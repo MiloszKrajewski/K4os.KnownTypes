@@ -188,4 +188,84 @@ public class SystemJsonTests
         Assert.IsType<JsonElement>(deserialized2);
         Assert.IsType<JsonElement>(deserialized3);
     }
+    
+    [Fact]
+    public void WithoutObjectConverterObjectIsDeserializedAsJsonElement()
+    {
+        var registry = new KnownTypesRegistry();
+        registry.Register("aname", typeof(Derived));
+        
+        var options = CreateOptions(registry);
+        var serialized = JsonSerializer.Serialize(new Derived(), options);
+        var deserialized1 = JsonSerializer.Deserialize<Base>(serialized, options);
+        var deserialized2 = JsonSerializer.Deserialize<object>(serialized, options);
+        
+        Assert.IsType<Derived>(deserialized1);
+        Assert.IsType<JsonElement>(deserialized2);
+    }
+    
+    [Fact]
+    public void CanUseObjectConverterToAvoidJsonElement()
+    {
+        var registry = new KnownTypesRegistry();
+        registry.Register("aname", typeof(Derived));
+        
+        var options = CreateOptions(registry);
+        options.Converters.Add(new KnownTypeObjectConverter(registry));
+
+        var serialized = JsonSerializer.Serialize(new Derived(), options);
+        var deserialized1 = JsonSerializer.Deserialize<Base>(serialized, options);
+        var deserialized2 = JsonSerializer.Deserialize<object>(serialized, options);
+        
+        Assert.IsType<Derived>(deserialized1);
+        Assert.IsType<Derived>(deserialized2);
+    }
+    
+    [Fact]
+    public void FullScopeDictionaryConversion()
+    {
+        var registry = new KnownTypesRegistry();
+        registry.Register("derived", typeof(Derived));
+
+        var options = new JsonSerializerOptions {
+            TypeInfoResolver = new KnownTypesJsonTypeInfoResolver(registry)
+        };
+        // enable object converter with Full scope
+        options.Converters.Add(new KnownTypeObjectConverter(registry, ConversionScope.Full));
+
+        var original = new Derived { Text = "text", Value = 42 };
+        // this is anonymous object with various field types, best we can get back is Dictionary<string, object?>
+        var payload = new {
+            numberInt = 123L,
+            numberFloat = 3.14,
+            booleanTrue = true,
+            guid = Guid.NewGuid(),
+            timestamp = DateTime.UtcNow,
+            justString = "hello",
+            knownObject = original,
+            array = new object[] { 1L, 2.1, true, "world", original },
+            justNull = (object?)null
+        };
+
+        var json = JsonSerializer.Serialize(payload, options);
+        var roundtripObject = JsonSerializer.Deserialize<object>(json, options)!;
+        var roundtripMap = Assert.IsType<Dictionary<string, object?>>(roundtripObject);
+
+        // Verify types according to Full scope
+        Assert.IsType<long>(roundtripMap["numberInt"]);
+        Assert.IsType<double>(roundtripMap["numberFloat"]);
+        Assert.IsType<bool>(roundtripMap["booleanTrue"]);
+        Assert.True(roundtripMap["guid"] is Guid);
+        Assert.True(roundtripMap["timestamp"] is DateTime);
+        Assert.IsType<string>(roundtripMap["justString"]);
+        Assert.IsType<Derived>(roundtripMap["knownObject"]);
+        Assert.Null(roundtripMap["justNull"]);
+
+        var array = Assert.IsType<object[]>(roundtripMap["array"]);
+        Assert.IsType<long>(array[0]);
+        Assert.IsType<double>(array[1]);
+        Assert.IsType<bool>(array[2]);
+        Assert.IsType<string>(array[3]);
+        Assert.IsType<Derived>(array[4]);
+    }
 }

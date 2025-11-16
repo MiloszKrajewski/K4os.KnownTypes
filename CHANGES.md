@@ -1,3 +1,6 @@
+## 2.2.0 (2025/11/16)
+* ADDED: KnownTypeObjectConverter to handle polymorphism for System.Text.Json serialization
+
 ## 2.1.0 (2024/07/14)
 * ADDED: handles DataContact attributes as well
 * CHANGED: exposing IKnownTypesRegistry and IKnownTypesResolver interfaces
